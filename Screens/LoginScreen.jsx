@@ -1,3 +1,5 @@
+
+
 import React, { useState } from "react";
 import {
   StyleSheet,
@@ -8,15 +10,27 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
   Keyboard,
+  KeyboardAvoidingView,
+  Platform,
+  Alert,
 } from "react-native";
 
+const initialState = {
+  email: "",
+  password: "",
+};
 
+export default LoginScreen = () => {
+  const [state, setState] = useState(initialState);
 
-export default LoginScreen = (props) => {
-
+  const onLogin = () => {
+    Alert.alert(`Credentials, ${state.email}!`);
+    Keyboard.dismiss();
+    console.log(state);
+  };
 
   return (
-    <TouchableWithoutFeedback>
+    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <View style={styles.container}>
         <ImageBackground
           style={styles.image}
@@ -24,29 +38,49 @@ export default LoginScreen = (props) => {
         >
           <View style={styles.formBox}>
             <Text style={styles.title}>Увійти</Text>
-            <View style={styles.form} marginBottom={16}>
-              <TextInput
-                style={styles.input}
-                marginBottom={16}
-                placeholder="Адреса електронної пошти"
-                
-              ></TextInput>
-              <View marginBottom={43}>
+
+            <KeyboardAvoidingView
+              behavior={Platform.OS == "ios" ? "padding" : "height"}
+            >
+              <View style={styles.form} marginBottom={16}>
                 <TextInput
                   style={styles.input}
-                  
-                  placeholder="Пароль"
-                  
+                  marginBottom={16}
+                  placeholder="Адреса електронної пошти"
+                  value={state.email}
+                  onChangeText={(value) =>
+                    setState((prevState) => ({ ...prevState, email: value }))
+                  }
                 ></TextInput>
-                <Text style={styles.btnLook}>Показати</Text>
+                <View marginBottom={43}>
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Пароль"
+                    value={state.password}
+                    onChangeText={(value) =>
+                      setState((prevState) => ({
+                        ...prevState,
+                        password: value,
+                      }))
+                    }
+                  ></TextInput>
+                  <TouchableOpacity style={styles.btnLook}>
+                    <Text style={styles.showText}>Показати</Text>
+                  </TouchableOpacity>
+                </View>
+
+                <TouchableOpacity style={styles.btnLoad}>
+                  <Text style={styles.btnLoadText} onPress={onLogin}>
+                    Увійти
+                  </Text>
+                </TouchableOpacity>
               </View>
-              <TouchableOpacity style={styles.btnLoad}>
-                <Text style={styles.btnLoadText}>Увійти</Text>
-              </TouchableOpacity>
-            </View>
+            </KeyboardAvoidingView>
+
             <TouchableOpacity style={styles.btn}>
-              <Text style={styles.toLog}>Немає акаунту? </Text>
-              <Text style={styles.toLogSpan}>Зареєструватися</Text>
+              <Text style={styles.toLogSpan}>
+                Немає акаунту? Зареєструватися
+              </Text>
             </TouchableOpacity>
           </View>
         </ImageBackground>
@@ -104,22 +138,19 @@ const styles = StyleSheet.create({
     backgroundColor: "#FF6C00",
     paddingVertical: 16,
     borderRadius: 100,
-    textAlign: "cebter",
+    textAlign: "center",
     alignItems: "center",
   },
   btnLoadText: {
     color: "#ffffff",
     fontWeight: 400,
     fontSize: 16,
-    fontWeight: 19,
   },
   btn: {
     flexDirection: "row",
     justifyContent: "center",
   },
-  toLog: {
-    color: "#1B4371",
-  },
+
   toLogSpan: {
     color: "#1B4371",
     borderBottomWidth: 1,
@@ -127,5 +158,8 @@ const styles = StyleSheet.create({
   },
   focus: {
     backgroundColor: "red",
+  },
+  showText: {
+    color: "#1B4371",
   },
 });

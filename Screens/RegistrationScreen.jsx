@@ -7,9 +7,12 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
   Keyboard,
+  KeyboardAvoidingView,
+  Platform,
+  Alert,
 } from "react-native";
-import addSvg from "../images/add.svg";
 import { SvgXml } from "react-native-svg";
+import React, { useState } from "react";
 
 const xml = `
  <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -18,7 +21,20 @@ const xml = `
 </svg>
 `;
 
+const initialState = {
+  name: "",
+  email: "",
+  password: "",
+};
+
 export default RegistrationScreen = () => {
+  const [state, setState] = useState(initialState);
+
+  const onRegister = () => {
+    Alert.alert(`Credentials, ${state.name}!`);
+    Keyboard.dismiss();
+    console.log(state);
+  };
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <View style={styles.container}>
@@ -29,39 +45,57 @@ export default RegistrationScreen = () => {
           <View style={styles.formBox}>
             <View style={styles.avatar}>
               <TouchableOpacity style={styles.addAvatarBtn}>
-                <SvgXml
-                  xml={xml}
-                  width="25"
-                  height="25"
-                />
+                <SvgXml xml={xml} width="25" height="25" />
               </TouchableOpacity>
             </View>
             <Text style={styles.title}>Реєстрація</Text>
-            <View style={styles.form} marginBottom={16}>
-              <TextInput
-                style={styles.input}
-                marginBottom={16}
-                placeholder="Логін"
-              ></TextInput>
-              <TextInput
-                style={styles.input}
-                marginBottom={16}
-                placeholder="Адреса електронної пошти"
-              ></TextInput>
-              <View marginBottom={43}>
+            <KeyboardAvoidingView
+              behavior={Platform.OS == "ios" ? "padding" : "height"}
+            >
+              <View style={styles.form} marginBottom={16}>
                 <TextInput
                   style={styles.input}
-                  secureTextEntry={true}
-                  placeholder="Пароль"
+                  marginBottom={16}
+                  placeholder="Логін"
+                  value={state.name}
+                  onChangeText={(value) =>
+                    setState((prevState) => ({ ...prevState, name: value }))
+                  }
                 ></TextInput>
-                <TouchableOpacity style={styles.btnLook}>
-                  <Text style={styles.showText}>Показати</Text>
+
+                <TextInput
+                  style={styles.input}
+                  marginBottom={16}
+                  placeholder="Адреса електронної пошти"
+                  value={state.email}
+                  onChangeText={(value) =>
+                    setState((prevState) => ({ ...prevState, email: value }))
+                  }
+                ></TextInput>
+                <View marginBottom={43}>
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Пароль"
+                    value={state.password}
+                    onChangeText={(value) =>
+                      setState((prevState) => ({
+                        ...prevState,
+                        password: value,
+                      }))
+                    }
+                  ></TextInput>
+                  <TouchableOpacity style={styles.btnLook}>
+                    <Text style={styles.showText}>Показати</Text>
+                  </TouchableOpacity>
+                </View>
+
+                <TouchableOpacity style={styles.btnLoad}>
+                  <Text style={styles.btnLoadText} onPress={onRegister}>
+                    Зареєстуватися
+                  </Text>
                 </TouchableOpacity>
               </View>
-              <TouchableOpacity style={styles.btnLoad}>
-                <Text style={styles.btnLoadText}>Зареєстуватися</Text>
-              </TouchableOpacity>
-            </View>
+            </KeyboardAvoidingView>
             <TouchableOpacity>
               <Text style={styles.toLog}>Вже є акаунт? Увійти</Text>
             </TouchableOpacity>
@@ -95,7 +129,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#F6F6F6",
     borderRadius: 16,
     position: "absolute",
-    left: "35%",
+    left: 150,
+    transform: [{ translateX: -50 }],
     top: -60,
   },
   addAvatarBtn: {
@@ -106,13 +141,11 @@ const styles = StyleSheet.create({
     bottom: 14,
     borderWidth: 1,
     borderColor: "transparent",
-
   },
-
 
   title: {
     color: "#212121",
-    fontWeight: "500",
+    fontWeight: 500,
     fontSize: 30,
     lineHeight: 35,
     textAlign: "center",
@@ -146,7 +179,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#FF6C00",
     paddingVertical: 16,
     borderRadius: 100,
-    textAlign: "cebter",
+    textAlign: "center",
     alignItems: "center",
   },
   btnLoadText: {
