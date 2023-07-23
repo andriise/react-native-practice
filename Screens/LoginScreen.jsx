@@ -1,5 +1,3 @@
-
-
 import React, { useState } from "react";
 import {
   StyleSheet,
@@ -14,6 +12,8 @@ import {
   Platform,
   Alert,
 } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import Home from "./HomeScreens/Home";
 
 const initialState = {
   email: "",
@@ -23,10 +23,11 @@ const initialState = {
 export default LoginScreen = () => {
   const [state, setState] = useState(initialState);
 
+  const navigation = useNavigation();
+
   const onLogin = () => {
-    Alert.alert(`Credentials, ${state.email}!`);
+    navigation.navigate("Home");
     Keyboard.dismiss();
-    console.log(state);
   };
 
   return (
@@ -69,16 +70,17 @@ export default LoginScreen = () => {
                   </TouchableOpacity>
                 </View>
 
-                <TouchableOpacity style={styles.btnLoad}>
-                  <Text style={styles.btnLoadText} onPress={onLogin}>
-                    Увійти
-                  </Text>
+                <TouchableOpacity style={styles.btnLoad} onPress={onLogin}>
+                  <Text style={styles.btnLoadText}>Увійти</Text>
                 </TouchableOpacity>
               </View>
             </KeyboardAvoidingView>
 
             <TouchableOpacity style={styles.btn}>
-              <Text style={styles.toLogSpan}>
+              <Text
+                style={styles.toLogSpan}
+                onPress={() => navigation.navigate("RegistrationScreen")}
+              >
                 Немає акаунту? Зареєструватися
               </Text>
             </TouchableOpacity>

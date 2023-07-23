@@ -13,6 +13,8 @@ import {
 } from "react-native";
 import { SvgXml } from "react-native-svg";
 import React, { useState } from "react";
+import { useNavigation } from "@react-navigation/native";
+import Home from "./HomeScreens/Home";
 
 const xml = `
  <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -29,11 +31,11 @@ const initialState = {
 
 export default RegistrationScreen = () => {
   const [state, setState] = useState(initialState);
+  const navigation = useNavigation();
 
   const onRegister = () => {
-    Alert.alert(`Credentials, ${state.name}!`);
+    navigation.navigate("Home");
     Keyboard.dismiss();
-    console.log(state);
   };
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
@@ -89,15 +91,18 @@ export default RegistrationScreen = () => {
                   </TouchableOpacity>
                 </View>
 
-                <TouchableOpacity style={styles.btnLoad}>
-                  <Text style={styles.btnLoadText} onPress={onRegister}>
-                    Зареєстуватися
-                  </Text>
+                <TouchableOpacity style={styles.btnLoad} onPress={onRegister}>
+                  <Text style={styles.btnLoadText}>Зареєстуватися</Text>
                 </TouchableOpacity>
               </View>
             </KeyboardAvoidingView>
             <TouchableOpacity>
-              <Text style={styles.toLog}>Вже є акаунт? Увійти</Text>
+              <Text
+                style={styles.toLog}
+                onPress={() => navigation.navigate("LoginScreen")}
+              >
+                Вже є акаунт? Увійти
+              </Text>
             </TouchableOpacity>
           </View>
         </ImageBackground>
