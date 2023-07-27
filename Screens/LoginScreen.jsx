@@ -10,10 +10,8 @@ import {
   Keyboard,
   KeyboardAvoidingView,
   Platform,
-  Alert,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import Home from "./HomeScreens/Home";
 
 const initialState = {
   email: "",

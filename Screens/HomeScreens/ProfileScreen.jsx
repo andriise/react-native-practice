@@ -157,16 +157,7 @@ const styles = StyleSheet.create({
     top: -40,
     right: 16,
   },
-  // textName: {
-  //     fontFamily: "Roboto-Regular",
-  //     fontSize: 30,
-  //     color: "#212121",
-  //     fontWeight: 500,
-  //     lineHeight: 35,
-  //     textAlign: "center",
-  //     letterSpacing: 0.01,
-  //     marginBottom: 32,
-  // },
+
 
   locationBox: {
     display: "flex",

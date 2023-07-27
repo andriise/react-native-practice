@@ -7,6 +7,8 @@ import * as SplashScreen from "expo-splash-screen";
 import "react-native-gesture-handler";
 import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
+import Home from "./Screens/HomeScreens/Home";
+
 const MainStack = createStackNavigator();
 
 export default function App() {

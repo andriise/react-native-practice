@@ -9,12 +9,10 @@ import {
   Keyboard,
   KeyboardAvoidingView,
   Platform,
-  Alert,
 } from "react-native";
 import { SvgXml } from "react-native-svg";
 import React, { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
-import Home from "./HomeScreens/Home";
 
 const xml = `
  <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
