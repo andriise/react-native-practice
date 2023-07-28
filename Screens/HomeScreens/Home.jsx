@@ -1,24 +1,21 @@
-import {
-  StyleSheet,
-  View,
-  TouchableOpacity,
-} from "react-native";
+import { StyleSheet, View, TouchableOpacity } from "react-native";
 import { useState } from "react";
-import {
-  Feather,
-  AntDesign,
-  SimpleLineIcons,
-} from "@expo/vector-icons";
-
+import { Feather, AntDesign, SimpleLineIcons } from "@expo/vector-icons";
+import { authSignOutUser } from "../../redux/auth/authOperations";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import PostsScreen from "./PostsScreen";
 import CreatePostsScreen from "./CreatePostsScreen";
 import ProfileScreen from "./ProfileScreen";
+import { useDispatch } from "react-redux";
 
 const Tabs = createBottomTabNavigator();
 
 export default Home = ({ navigation }) => {
+  const dispatch = useDispatch();
   const [bar, setBar] = useState(true);
+   const signOut = () => {
+     dispatch(authSignOutUser());
+   };
   return (
     <Tabs.Navigator screenOptions={styles.container}>
       <Tabs.Screen
@@ -38,7 +35,7 @@ export default Home = ({ navigation }) => {
           headerTitle: { color: "#212121" },
 
           headerRight: () => (
-            <TouchableOpacity>
+            <TouchableOpacity onPress={signOut}>
               <Feather
                 name="log-out"
                 size={24}
@@ -76,7 +73,6 @@ export default Home = ({ navigation }) => {
           headerTitleStyle: {
             fontSize: 17,
             lineHeight: 22,
-            
           },
           headerTitle: { color: "#212121" },
 
@@ -160,4 +156,3 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
 });
-

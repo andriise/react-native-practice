@@ -11,21 +11,38 @@ import {
   KeyboardAvoidingView,
   Platform,
 } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import { useDispatch } from "react-redux";
+import { authSignInUser } from "../redux/auth/authOperations";
 
-const initialState = {
-  email: "",
-  password: "",
-};
+export default LoginScreen = ({navigation}) => {
+  const [isShowKeyDown, setIsShowKeyDown] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const dispatch = useDispatch();
 
-export default LoginScreen = () => {
-  const [state, setState] = useState(initialState);
 
-  const navigation = useNavigation();
+  const emailHandler = (text) => {
+    setEmail(text);
+  };
 
-  const onLogin = () => {
-    navigation.navigate("Home");
+  const passwordHandler = (text) => {
+    setPassword(text);
+  };
+
+  const resetForm = () => {
+    setEmail("");
+    setPassword("");
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const data = {
+      email,
+      password,
+    };
+    dispatch(authSignInUser(data));
     Keyboard.dismiss();
+    resetForm();
   };
 
   return (
@@ -46,29 +63,28 @@ export default LoginScreen = () => {
                   style={styles.input}
                   marginBottom={16}
                   placeholder="Адреса електронної пошти"
-                  value={state.email}
-                  onChangeText={(value) =>
-                    setState((prevState) => ({ ...prevState, email: value }))
-                  }
+                  value={email}
+                  onChangeText={emailHandler}
+                  onFocus={() => {
+                    setIsShowKeyDown(true);
+                  }}
                 ></TextInput>
                 <View marginBottom={43}>
                   <TextInput
                     style={styles.input}
                     placeholder="Пароль"
-                    value={state.password}
-                    onChangeText={(value) =>
-                      setState((prevState) => ({
-                        ...prevState,
-                        password: value,
-                      }))
-                    }
+                    value={password}
+                    onChangeText={passwordHandler}
+                    onFocus={() => {
+                      setIsShowKeyboard(true);
+                    }}
                   ></TextInput>
                   <TouchableOpacity style={styles.btnLook}>
                     <Text style={styles.showText}>Показати</Text>
                   </TouchableOpacity>
                 </View>
 
-                <TouchableOpacity style={styles.btnLoad} onPress={onLogin}>
+                <TouchableOpacity style={styles.btnLoad} onPress={handleSubmit}>
                   <Text style={styles.btnLoadText}>Увійти</Text>
                 </TouchableOpacity>
               </View>

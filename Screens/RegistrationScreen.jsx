@@ -12,7 +12,8 @@ import {
 } from "react-native";
 import { SvgXml } from "react-native-svg";
 import React, { useState } from "react";
-import { useNavigation } from "@react-navigation/native";
+import { useDispatch } from "react-redux";
+import { authRegisterUser } from "../redux/auth/authOperations";
 
 const xml = `
  <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -21,20 +22,42 @@ const xml = `
 </svg>
 `;
 
-const initialState = {
-  name: "",
-  email: "",
-  password: "",
-};
+export default RegistrationScreen = ({ navigation }) => {
+  const [isShowKeyboard, setIsShowKeyboard] = useState(false);
+  const [login, setLogin] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [image, setImage] = useState(null);
 
-export default RegistrationScreen = () => {
-  const [state, setState] = useState(initialState);
-  const navigation = useNavigation();
+  const dispatch = useDispatch();
 
-  const onRegister = () => {
-    navigation.navigate("Home");
+  const loginHandler = (text) => {
+    setLogin(text);
+  };
+
+  const emailHandler = (text) => {
+    setEmail(text.trim());
+  };
+
+  const passwordHandler = (text) => {
+    setPassword(text.trim());
+  };
+
+  const handleSubmit = () => {
+    const data = {
+      login,
+      email,
+      password,
+    };
+
+    dispatch(authRegisterUser(data));
+    setLogin("");
+    setEmail("");
+    setPassword("");
     Keyboard.dismiss();
   };
+
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <View style={styles.container}>
@@ -57,39 +80,36 @@ export default RegistrationScreen = () => {
                   style={styles.input}
                   marginBottom={16}
                   placeholder="Логін"
-                  value={state.name}
-                  onChangeText={(value) =>
-                    setState((prevState) => ({ ...prevState, name: value }))
-                  }
+                  value={login}
+                  onFocus={() => {
+                    setIsShowKeyboard(true);
+                  }}
+                  onChangeText={loginHandler}
                 ></TextInput>
 
                 <TextInput
                   style={styles.input}
                   marginBottom={16}
                   placeholder="Адреса електронної пошти"
-                  value={state.email}
-                  onChangeText={(value) =>
-                    setState((prevState) => ({ ...prevState, email: value }))
-                  }
+                  value={email}
+                  onChangeText={emailHandler}
                 ></TextInput>
                 <View marginBottom={43}>
                   <TextInput
                     style={styles.input}
                     placeholder="Пароль"
-                    value={state.password}
-                    onChangeText={(value) =>
-                      setState((prevState) => ({
-                        ...prevState,
-                        password: value,
-                      }))
-                    }
+                    value={password}
+                    onFocus={() => {
+                      setIsShowKeyboard(true);
+                    }}
+                    onChangeText={passwordHandler}
                   ></TextInput>
                   <TouchableOpacity style={styles.btnLook}>
                     <Text style={styles.showText}>Показати</Text>
                   </TouchableOpacity>
                 </View>
 
-                <TouchableOpacity style={styles.btnLoad} onPress={onRegister}>
+                <TouchableOpacity style={styles.btnLoad} onPress={handleSubmit}>
                   <Text style={styles.btnLoadText}>Зареєстуватися</Text>
                 </TouchableOpacity>
               </View>

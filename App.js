@@ -8,6 +8,9 @@ import "react-native-gesture-handler";
 import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
 import Home from "./Screens/HomeScreens/Home";
+import { Provider } from "react-redux";
+import { store } from "./redux/store";
+import Main from "./components/Main";
 
 const MainStack = createStackNavigator();
 
@@ -25,27 +28,35 @@ export default function App() {
   if (!fontsLoaded) {
     return null;
   }
+
   return (
-    <NavigationContainer>
-      <MainStack.Navigator initialRouteName="Registration">
-        <MainStack.Screen
-          name="RegistrationScreen"
-          component={RegistrationScreen}
-          options={{ headerShown: false }}
-        ></MainStack.Screen>
-        <MainStack.Screen
-          name="LoginScreen"
-          component={LoginScreen}
-          options={{ headerShown: false }}
-        ></MainStack.Screen>
-        <MainStack.Screen
-          name="Home"
-          component={Home}
-          options={{ headerShown: false }}
-        />
-      </MainStack.Navigator>
-    </NavigationContainer>
+    <Provider store={store}>
+        <Main />
+
+    </Provider>
   );
+}
+
+{
+  /* <NavigationContainer>
+  <MainStack.Navigator initialRouteName="Registration">
+    <MainStack.Screen
+      name="RegistrationScreen"
+      component={RegistrationScreen}
+      options={{ headerShown: false }}
+    ></MainStack.Screen>
+    <MainStack.Screen
+      name="LoginScreen"
+      component={LoginScreen}
+      options={{ headerShown: false }}
+    ></MainStack.Screen>
+    <MainStack.Screen
+      name="Home"
+      component={Home}
+      options={{ headerShown: false }}
+    />
+  </MainStack.Navigator>
+</NavigationContainer>; */
 }
 
 const styles = StyleSheet.create({
@@ -56,6 +67,3 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
 });
-
-// <RegistrationScreen style={styles.container} />
-// <LoginScreen style={styles.container} />
